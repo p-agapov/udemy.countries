@@ -28,12 +28,20 @@ class MainActivity : AppCompatActivity() {
             adapter = countriesAdapter
         }
 
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = false
+            viewModel.refresh()
+        }
+
         observeViewModel()
     }
 
     fun observeViewModel() {
         viewModel.countries.observe(this, Observer { countries ->
-            countries?.let { countriesAdapter.updateCountries(it) }
+            countries?.let {
+                countriesAdapter.updateCountries(it)
+                countriesList.visibility = View.VISIBLE
+            }
         })
 
         viewModel.countryLoadError.observe(this, Observer { isError ->
