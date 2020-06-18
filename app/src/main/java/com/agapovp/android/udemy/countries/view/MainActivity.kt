@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var viewModel: ListViewModel
+    private lateinit var viewModel: ListViewModel
 
     private val countriesAdapter = CountryListAdapter(arrayListOf())
 
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         observeViewModel()
     }
 
-    fun observeViewModel() {
+    private fun observeViewModel() {
         viewModel.countries.observe(this, Observer { countries ->
             countries?.let {
                 countriesAdapter.updateCountries(it)
