@@ -1,0 +1,29 @@
+{
+  "comment": "Country sample",
+  "countries": [
+    {
+      "names": [
+        {
+          "name": "United States of America"
+        },
+        {
+          "name": "America"
+        },
+        {
+          "name": "USA"
+        }
+      ],
+      "capitals": [
+        {
+          "capital": "Washington, District of Columbia"
+        },
+        {
+          "capital": "Washington, D.C."
+        },
+        {
+          "capital": "Washington"
+        }
+      ]
+    }
+  ]
+}

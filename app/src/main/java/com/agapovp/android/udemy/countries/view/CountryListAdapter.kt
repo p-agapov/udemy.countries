@@ -3,12 +3,14 @@ package com.agapovp.android.udemy.countries.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.agapovp.android.udemy.countries.R
+import com.agapovp.android.udemy.countries.databinding.ItemCountryBinding
 import com.agapovp.android.udemy.countries.model.Country
 import com.agapovp.android.udemy.countries.util.getProgressDrawable
 import com.agapovp.android.udemy.countries.util.loadImage
-import kotlinx.android.synthetic.main.item_country.view.*
 
 class CountryListAdapter(var countries: ArrayList<Country>) :
     RecyclerView.Adapter<CountryListAdapter.CountryViewHolder>() {
@@ -19,27 +21,38 @@ class CountryListAdapter(var countries: ArrayList<Country>) :
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CountryViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_country, parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        CountryViewHolder(
+            ItemCountryBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            ).root
+        )
 
     override fun getItemCount() = countries.size
 
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
-        holder.bind(countries[position])
+        holder.binding.country = countries[position]
     }
 
     class CountryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        private val imageView = view.imageView
-        private val countryName = view.name
-        private val countryCapital = view.capital
-        private val progressDrawable = getProgressDrawable(view.context)
+        internal lateinit var binding: ItemCountryBinding
 
-        fun bind(country: Country) {
-            countryName.text = country.countryName
-            countryCapital.text = country.capital
-            imageView.loadImage(country.flag, progressDrawable)
+        init {
+            DataBindingUtil.bind<ItemCountryBinding>(view)?.let {
+                binding = it
+            }
+        }
+    }
+
+    companion object {
+
+        @JvmStatic
+        @BindingAdapter("bind:imageUrl")
+        fun loadImage(imageView: ImageView, imageUrl: String) {
+            imageView.loadImage(imageUrl, getProgressDrawable(imageView.context))
         }
     }
 }
